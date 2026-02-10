@@ -1,105 +1,93 @@
-# Developing a Neural Network Classification Model
-
-## AIM
-
-To develop a neural network classification model for the given dataset.
-
-## Problem Statement
-
-An automobile company has plans to enter new markets with their existing products. After intensive market research, they’ve decided that the behavior of the new market is similar to their existing market.
-
-In their existing market, the sales team has classified all customers into 4 segments (A, B, C, D ). Then, they performed segmented outreach and communication for a different segment of customers. This strategy has work exceptionally well for them. They plan to use the same strategy for the new markets.
-
-You are required to help the manager to predict the right group of the new customers.
-
-## Neural Network Model
-
-<img width="1209" height="799" alt="image" src="https://github.com/user-attachments/assets/2a210679-0a23-4590-9a97-84b5380f5907" />
+    <h1>ExpNo 1 :Developing AI Agent with PEAS Description</h1>
+<h3>Name: KEERTHIKA A </h3>
+<h3>Register number:212224220048</h3>
 
 
-## DESIGN STEPS
+<h3>AIM:</h3>
+<br>
+<p>To find the PEAS description for the given AI problem and develop an AI agent.</p>
+<br>
+<h3>Theory</h3>
+<h3>Medicine prescribing agent:</h3>
+<p>Such this agent prescribes medicine for fever (greater than 98.5 degrees) which we consider here as unhealthy, by the user temperature input, and another environment is rooms in the hospital (two rooms). This agent has to consider two factors one is room location and an unhealthy patient in a random room, the agent has to move from one room to another to check and treat the unhealthy person. The performance of the agent is calculated by incrementing performance and each time after treating in one room again it has to check another room so that the movement causes the agent to reduce its performance. Hence, agents prescribe medicine to unhealthy.</p>
+<hr>
+<h3>PEAS DESCRIPTION:</h3>
+<table>
+  <tr>
+    <td><strong>Agent Type</strong></td>
+    <td><strong>Performance</strong></td>
+     <td><strong>Environment</strong></td>
+    <td><strong>Actuators</strong></td>
+    <td><strong>Sensors</strong></td>
+  </tr>
+    <tr>
+    <td><strong>Medicine prescribing agent</strong></td>
+    <td><strong>Treating unhealthy, agent movement</strong></td>
+     <td><strong>Rooms, Patient</strong></td>
+    <td><strong>Medicine, Treatment</strong></td>
+    <td><strong>Location, Temperature of patient</strong></td>
+  </tr>
+</table>
+<hr>
+<H3>DESIGN STEPS</H3>
+<h3>STEP 1:Identifying the input:</h3>
+<p>Temperature from patients, Location.</p>
+<h3>STEP 2:Identifying the output:</h3>
+<p>Prescribe medicine if the patient in a random has a fever.</p>
+<h3>STEP 3:Developing the PEAS description:</h3>
+<p>PEAS description is developed by the performance, environment, actuators, and sensors in an agent.</p>
+<h3>STEP 4:Implementing the AI agent:</h3>
+<p>Treat unhealthy patients in each room. And check for the unhealthy patients in random room</p>
+<h3>STEP 5:</h3>
+<p>Measure the performance parameters: For each treatment performance incremented, for each movement performance decremented</p>
 
-### STEP 1: Data Collection and Understanding
-Collect customer data from the existing market and identify the features that influence customer segmentation. Define the target variable as the customer segment (A, B, C, or D).
+## PROGRAM:
+```
+import random
 
-### STEP 2: Data Preprocessing
-Remove irrelevant attributes, handle missing values, and encode categorical variables into numerical form. Split the dataset into training and testing sets.
+# Initial setup
+rooms = ["Room 1", "Room 2"]
+agent_location = "Room 1"
+patient_location = random.choice(rooms)
 
-### STEP 3: Model Design and Training
-Design a neural network classification model with suitable input, hidden, and output layers. Train the model using the training data to learn patterns for customer segmentation.
+performance = 0
 
-### STEP 4: Model Evaluation and Prediction
-Evaluate the trained model using test data and use it to predict the customer segment for new customers in the target market.
+# Get patient temperature
+temperature = float(input("Enter patient temperature: "))
 
+print("\nAgent starting location:", agent_location)
+print("Patient is in:", patient_location)
 
-## PROGRAM
+# Check room and move if needed
+if agent_location != patient_location:
+    print("Agent moving to", patient_location)
+    performance -= 1
+    agent_location = patient_location
 
-### Name: KEERTHIKA A
-### Register Number: 212224220048
+# Check health condition
+if temperature > 98.5:
+    print("Patient is unhealthy")
+    print("Prescribing medicine...")
+    performance += 10
+else:
+    print("Patient is healthy")
 
-```python
-# Define Neural Network(Model1)
-class PeopleClassifier(nn.Module):
-    def __init__(self, input_size):
-        super(PeopleClassifier, self).__init__()
-        self.fc1 = nn.Linear(input_size, 32)
-        self.fc2 = nn.Linear(32, 16)
-        self.fc3 = nn.Linear(16, 8)
-        self.fc4 = nn.Linear(8, 4)
-    def forward(self, x):
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = F.relu(self.fc3(x))
-        x = self.fc4(x)
-        return x
+# Move to check the other room
+other_room = "Room 2" if agent_location == "Room 1" else "Room 1"
+print("Agent moving to", other_room)
+performance -= 1
 
+# Final performance
+print("\nFinal Performance Measure:", performance)
 ```
 
-```python
-# Initialize the Model, Loss Function, and Optimizer
-model = PeopleClassifier(input_size=X_train.shape[1])
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(),lr=0.001)
-train_model(model, train_loader, criterion, optimizer, epochs=100)
+## OUTPUT:
 
-```
-
-```python
-#function to train the model
-def train_model(model, train_loader, criterion, optimizer, epochs):
-    model.train()
-    for epoch in range(epochs):
-        for inputs, labels in train_loader:
-          optimizer.zero_grad()
-          outputs=model(inputs)
-          loss=criterion(outputs, labels)
-          loss.backward()
-          optimizer.step()
-    if (epoch + 1) % 10 == 0:
-        print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
-```
-
-## Dataset Information
-
-<img width="1191" height="242" alt="image" src="https://github.com/user-attachments/assets/8c310b54-5115-49ae-ab17-ceacfaeb026f" />
-
-## OUTPUT
-
-### Confusion Matrix
-
-<img width="649" height="551" alt="image" src="https://github.com/user-attachments/assets/75eda3ba-c4d2-49fa-9425-21c2c4dcc09c" />
+<img width="1920" height="1200" alt="Screenshot 2026-02-10 090508" src="https://github.com/user-attachments/assets/9b32e468-90dc-4e94-9c05-8d38e132d81f" />
 
 
-### Classification Report
 
-<img width="1211" height="648" alt="image" src="https://github.com/user-attachments/assets/b07597b7-c923-4b51-9c2e-f1a0ff4a57f2" />
-
-
-### New Sample Data Prediction
-
-<img width="1608" height="173" alt="image" src="https://github.com/user-attachments/assets/83d7f5da-85ac-499c-8c69-27702b558570" />
+## RESULT:
+PEAS description for the given AI problem and develop an AI agent is executed.
 
 
-## RESULT
-
-Thus neural network classification model is developded for the given dataset. 
