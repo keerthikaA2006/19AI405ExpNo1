@@ -1,92 +1,106 @@
-<h1>ExpNo 1 :Developing AI Agent with PEAS Description</h1>
-<h3>Name: keerthika A</h3>
-<h3>Register number:212224220048</h3>
+# Developing a Neural Network Regression Model
+
+## AIM
+
+To develop a neural network regression model for the given dataset.
+
+## THEORY
+
+The objective of this experiment is to develop a neural network regression model using a dataset created in Google Sheets with one numeric input and one numeric output. Regression is a supervised learning technique used to predict continuous values. A neural network is chosen because it can effectively learn both linear and non-linear relationships between input and output by adjusting its weights during training.
+
+The model is trained using backpropagation to minimize a loss function such as Mean Squared Error (MSE). During each iteration, the training loss is calculated and updated. The training loss vs iteration plot is used to visualize the learning process of the model, where a decreasing loss indicates that the neural network is learning properly and converging toward an optimal solution.
+
+## Neural Network Model
+
+<img width="1115" height="695" alt="image" src="https://github.com/user-attachments/assets/1a3163ce-4b0f-4fa5-9b13-61396699d3a9" />
 
 
-<h3>AIM:</h3>
-<br>
-<p>To find the PEAS description for the given AI problem and develop an AI agent.</p>
-<br>
-<h3>Theory</h3>
-<h3>Medicine prescribing agent:</h3>
-<p>Such this agent prescribes medicine for fever (greater than 98.5 degrees) which we consider here as unhealthy, by the user temperature input, and another environment is rooms in the hospital (two rooms). This agent has to consider two factors one is room location and an unhealthy patient in a random room, the agent has to move from one room to another to check and treat the unhealthy person. The performance of the agent is calculated by incrementing performance and each time after treating in one room again it has to check another room so that the movement causes the agent to reduce its performance. Hence, agents prescribe medicine to unhealthy.</p>
-<hr>
-<h3>PEAS DESCRIPTION:</h3>
-<table>
-  <tr>
-    <td><strong>Agent Type</strong></td>
-    <td><strong>Performance</strong></td>
-     <td><strong>Environment</strong></td>
-    <td><strong>Actuators</strong></td>
-    <td><strong>Sensors</strong></td>
-  </tr>
-    <tr>
-    <td><strong>Medicine prescribing agent</strong></td>
-    <td><strong>Treating unhealthy, agent movement</strong></td>
-     <td><strong>Rooms, Patient</strong></td>
-    <td><strong>Medicine, Treatment</strong></td>
-    <td><strong>Location, Temperature of patient</strong></td>
-  </tr>
-</table>
-<hr>
-<H3>DESIGN STEPS</H3>
-<h3>STEP 1:Identifying the input:</h3>
-<p>Temperature from patients, Location.</p>
-<h3>STEP 2:Identifying the output:</h3>
-<p>Prescribe medicine if the patient in a random has a fever.</p>
-<h3>STEP 3:Developing the PEAS description:</h3>
-<p>PEAS description is developed by the performance, environment, actuators, and sensors in an agent.</p>
-<h3>STEP 4:Implementing the AI agent:</h3>
-<p>Treat unhealthy patients in each room. And check for the unhealthy patients in random room</p>
-<h3>STEP 5:</h3>
-<p>Measure the performance parameters: For each treatment performance incremented, for each movement performance decremented</p>
+## DESIGN STEPS
 
-## PROGRAM:
+### STEP 1:
+
+Loading the dataset
+
+### STEP 2:
+
+Split the dataset into training and testing
+
+### STEP 3:
+
+Create MinMaxScalar objects ,fit the model and transform the data.
+
+### STEP 4:
+
+Build the Neural Network Model and compile the model.
+
+### STEP 5:
+
+Train the model with the training data.
+
+### STEP 6:
+
+Plot the performance plot
+
+### STEP 7:
+
+Evaluate the model with the testing data.
+
+## PROGRAM
+### Name: KEERTHIKA A
+### Register Number: 212224220048
+```python
+#creating model class
+class NeuralNet(nn.Module):
+  def __init__(self):
+        super().__init__()
+        self.fc1=nn.Linear(1, 8)
+        self.fc2=nn.Linear(8, 10)
+        self.fc3=nn.Linear(10, 1)
+        self.relu=nn.ReLU()
+        self.history={'loss':[]}
+
+  def forward(self,x):
+        x=self.relu(self.fc1(x))
+        x=self.relu(self.fc2(x))
+        x=self.fc3(x)
+        return x
+
+# Initialize the Model, Loss Function, and Optimizer
+ai_brain = NeuralNet()
+criterion=nn.MSELoss()
+optimizer=optim.RMSprop(ai_brain.parameters(), lr=0.001)
+
+#Function to train model
+def train_model(ai_brain, X_train, y_train, criterion, optimizer, epochs=2000):
+
+    for epoch in range(epochs):
+      optimizer.zero_grad()
+      loss=criterion(ai_brain(X_train),y_train)
+      loss.backward()
+      optimizer.step()
+
+      ai_brain.history['loss'].append(loss.item())
+      if epoch % 200 == 0:
+          print(f'Epoch [{epoch}/{epochs}], Loss: {loss.item():.6f}')
 ```
-import random
+## Dataset Information
+<img width="274" height="523" alt="image" src="https://github.com/user-attachments/assets/2dc3fa2d-c453-4512-8dc9-6dcbbfce96a7" />
 
-# Initial setup
-rooms = ["Room 1", "Room 2"]
-agent_location = "Room 1"
-patient_location = random.choice(rooms)
+## OUTPUT
 
-performance = 0
-
-# Get patient temperature
-temperature = float(input("Enter patient temperature: "))
-
-print("\nAgent starting location:", agent_location)
-print("Patient is in:", patient_location)
-
-# Check room and move if needed
-if agent_location != patient_location:
-    print("Agent moving to", patient_location)
-    performance -= 1
-    agent_location = patient_location
-
-# Check health condition
-if temperature > 98.5:
-    print("Patient is unhealthy")
-    print("Prescribing medicine...")
-    performance += 10
-else:
-    print("Patient is healthy")
-
-# Move to check the other room
-other_room = "Room 2" if agent_location == "Room 1" else "Room 1"
-print("Agent moving to", other_room)
-performance -= 1
-
-# Final performance
-print("\nFinal Performance Measure:", performance)
-```
-
-## OUTPUT:
-
-<img width="877" height="534" alt="image" src="https://github.com/user-attachments/assets/f687d542-4774-451e-8495-e0c4baa3a8b6" />
+<img width="784" height="492" alt="image" src="https://github.com/user-attachments/assets/e3fbdc58-644e-4ee4-a05f-c6e30a8d2eb0" />
 
 
-## RESULT:
-PEAS description for the given AI problem and develop an AI agent is executed.
+### Training Loss Vs Iteration Plot
+
+<img width="720" height="572" alt="image" src="https://github.com/user-attachments/assets/87168463-d0c2-4470-ba1d-f35e92192db8" />
 
 
+
+### New Sample Data Prediction
+
+<img width="779" height="148" alt="image" src="https://github.com/user-attachments/assets/40a7bbd0-64a8-4056-b7be-afa84375c938" />
+
+## RESULT
+
+Thus the neural network regression model is developed using the given dataset.
